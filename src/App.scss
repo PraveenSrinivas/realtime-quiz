@@ -1,0 +1,12 @@
+.quiz-container {
+  flex: 1 1 auto;
+  overflow: auto;
+}
+
+.quiz-footer {
+  display: flex;
+  background-color: dodgerblue;
+  justify-content: center;
+  align-items: center;
+  min-height: 2em;
+}

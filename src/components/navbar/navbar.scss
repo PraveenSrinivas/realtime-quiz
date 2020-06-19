@@ -1,0 +1,25 @@
+.quiz-header {
+  display: flex;
+  background-color: dodgerblue;
+  min-height: 2em;
+
+  .quiz-header-nav {
+    background-color: transparent;
+    text-decoration: none;
+    height: 100%;
+    display: flex;
+    place-items: center;
+    padding: 0 0.5rem;
+    color: white;
+    &:nth-child(2) {
+      flex: 1 1 auto;
+      pointer-events: none;
+    }
+    &:active,
+    &:hover,
+    &:focus {
+      background-color: darken($color: dodgerblue, $amount: 10);
+      outline: none;
+    }
+  }
+}

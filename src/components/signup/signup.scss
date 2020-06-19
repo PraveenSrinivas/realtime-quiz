@@ -1,0 +1,36 @@
+.signup-container {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+  justify-content: center;
+  align-items: center;
+
+  .signup-form-container {
+    background-color: dodgerblue;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    border-radius: 5%;
+    padding: 1rem 3rem;
+    min-height: 50%;
+    .signup-form-title {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    .signup-form-control {
+      margin: 0 0 0.5rem;
+    }
+
+    .signup-form-label {
+      margin: 0.5rem 0;
+    }
+
+    .signup-button {
+      border-radius: 5px;
+      margin: 1rem 1.5rem;
+      padding: 0.5rem;
+    }
+  }
+}
