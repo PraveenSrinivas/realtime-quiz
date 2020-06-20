@@ -61,9 +61,9 @@ export default class AdminDashboard extends Component {
       .collection("users")
       .where("isParticipant", "==", true)
       .onSnapshot((snapshot) => {
+        console.log(snapshot.docChanges());
         const participantsUpdates = snapshot.docChanges().map((change) => {
           const changeData = change.doc.data();
-          console.log(change);
           return {
             id: change.doc.id,
             selection: changeData.selection,
