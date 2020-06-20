@@ -3,18 +3,35 @@ import firebase from "firebase/app";
 import "firebase/firestore";
 
 import "./questionnaire.scss";
+import { Link } from "react-router-dom";
 
 export default class Questionnaire extends Component {
-  state = { ...this.props };
+  state = { id: "", quizObject: {}, selection: "", ...this.props };
+  db = firebase.firestore();
+
+  updateSelection = (event, selection) => {
+    event.preventDefault();
+    this.db
+      .collection("users")
+      .doc(this.props.userInfo.uid)
+      .update({ selection });
+    this.setState({ selection });
+  };
+
+  exitFromQuiz = () => {
+    this.db
+      .collection("users")
+      .doc(this.props.userInfo.uid)
+      .update({ isParticipant: false, selection: "" });
+  };
 
   componentDidMount() {
-    const db = firebase.firestore();
-    db.collection("display-question").onSnapshot((snapshot) => {
+    this.db.collection("display-question").onSnapshot((snapshot) => {
       this.setState({
         quizObject: snapshot.docChanges()[0].doc.data(),
         id: snapshot.docChanges()[0].doc.id,
+        selection: "",
       });
-      console.log(snapshot.docChanges());
     });
   }
 
@@ -43,7 +60,7 @@ export default class Questionnaire extends Component {
             </div>
           </div>
         ) : (
-          <p>Oops!! Sorry, no questions at the moment</p>
+          <p>Please wait till the next question is loaded.</p>
         )}
         <div className="endquiz-wrapper">
           <p className="endquiz-title">

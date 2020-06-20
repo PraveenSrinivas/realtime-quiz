@@ -21,7 +21,6 @@ class App extends Component {
   handleLogin = (creds) => {
     this.auth.signInWithEmailAndPassword(creds.email, creds.password).then(
       (response) => {
-        console.log(response);
         this.history.push("/");
       },
       (error) => {
@@ -32,8 +31,25 @@ class App extends Component {
 
   handleLogout = (event) => {
     event.preventDefault();
-    this.auth.signOut();
-    this.history.push("/");
+    if (this.state.isAdmin) {
+      this.db
+        .collection("users")
+        .doc(this.state.userInfo.uid)
+        .update({ selection: "" })
+        .then(() => {
+          this.auth.signOut();
+          this.history.push("/");
+        });
+    } else {
+      this.db
+        .collection("users")
+        .doc(this.state.userInfo.uid)
+        .update({ isParticipant: false })
+        .then(() => {
+          this.auth.signOut();
+          this.history.push("/");
+        });
+    }
   };
 
   handleSignup = (signupDetails) => {
@@ -44,14 +60,16 @@ class App extends Component {
       )
       .then(
         (response) => {
-          console.log(response);
-          response.user
-            .updateProfile({
-              displayName: signupDetails.username,
+          return this.db
+            .collection("users")
+            .doc(response.user.uid)
+            .set({
+              name: signupDetails.username,
+              email: signupDetails.email,
             })
-            .then((user) => this.setState({ userInfo: user }));
-          // this.db.collection("users").doc(response.user.uid).get().then();
-          this.history.push("/");
+            .then(() => {
+              this.history.push("/");
+            });
         },
         (error) => {
           alert(error.message);
@@ -63,7 +81,6 @@ class App extends Component {
     this.auth.onAuthStateChanged((user) => {
       if (user)
         user.getIdTokenResult().then((idTokenResult) => {
-          console.log(idTokenResult.claims);
           this.setState({
             userInfo: user,
             isUserLoggedIn: true,

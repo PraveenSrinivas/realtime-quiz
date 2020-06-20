@@ -11,7 +11,11 @@ export default class Dashboard extends Component {
       <div>
         {this.props.isUserLoggedIn ? (
           <React.Fragment>
-            {this.props.isAdmin ? <AdminDashboard /> : <UserDashboard />}
+            {this.props.isAdmin ? (
+              <AdminDashboard {...this.props} />
+            ) : (
+              <UserDashboard {...this.props} />
+            )}
           </React.Fragment>
         ) : (
           <React.Fragment>
