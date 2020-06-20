@@ -62,14 +62,17 @@ export default class AdminDashboard extends Component {
       .where("isParticipant", "==", true)
       .onSnapshot((snapshot) => {
         console.log(snapshot.docChanges());
-        const participantsUpdates = snapshot.docChanges().map((change) => {
-          const changeData = change.doc.data();
-          return {
-            id: change.doc.id,
-            selection: changeData.selection,
-            name: changeData.name,
-          };
-        });
+        const participantsUpdates = snapshot
+          .docChanges()
+          .filter((change) => change.type !== "removed")
+          .map((change) => {
+            const changeData = change.doc.data();
+            return {
+              id: change.doc.id,
+              selection: changeData.selection,
+              name: changeData.name,
+            };
+          });
         this.setState({ participantsUpdates });
       });
   }
@@ -117,11 +120,16 @@ export default class AdminDashboard extends Component {
         </div>
         <div className="admin-dashboard-user-updates-container">
           <h3>User interaction updates</h3>
-          {this.state.participantsUpdates.map((participant) => (
-            <span key={participant.id}>
-              {participant.name} has selected {participant.selection}
-            </span>
-          ))}
+          {this.state.participantsUpdates
+            .filter(
+              (participant) =>
+                participant.selection && participant.selection.length > 0
+            )
+            .map((participant) => (
+              <span key={participant.id}>
+                {participant.name} has selected {participant.selection}
+              </span>
+            ))}
         </div>
       </div>
     );
