@@ -11,9 +11,18 @@ const Navbar = (props) => {
       </Link>
       <span className="quiz-header-nav"></span>
       {props.isUserLoggedIn ? (
-        <button className="quiz-header-nav" onClick={props.onLogout}>
-          Logout
-        </button>
+        <React.Fragment>
+          <span className="quiz-header-greeting">
+            Welcome
+            {"  " +
+              (props.userInfo && props.userInfo.displayName
+                ? props.userInfo.displayName
+                : "User")}
+          </span>
+          <button className="quiz-header-nav" onClick={props.onLogout}>
+            Logout
+          </button>
+        </React.Fragment>
       ) : (
         <React.Fragment>
           <NavLink className="quiz-header-nav" to="/signup">

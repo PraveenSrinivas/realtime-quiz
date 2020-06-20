@@ -5,7 +5,7 @@ import "firebase/firestore";
 import "./questionnaire.scss";
 
 export default class Questionnaire extends Component {
-  state = { quizObject: null };
+  state = { ...this.props };
 
   componentDidMount() {
     const db = firebase.firestore();
@@ -24,18 +24,16 @@ export default class Questionnaire extends Component {
         {this.state.quizObject ? (
           <div className={this.state.id}>
             <div className="question">
-              {" "}
-              Question :- {this.state.quizObject.question}{" "}
+              Question :- {this.state.quizObject.question}
             </div>
             <div className="answer">
-              {" "}
               {this.state.quizObject.options.map((option) => (
                 <button key={option}>{option}</button>
-              ))}{" "}
+              ))}
             </div>
           </div>
         ) : (
-          ""
+          <p>Oops!! Sorry, no questions at the moment</p>
         )}
       </main>
     );
