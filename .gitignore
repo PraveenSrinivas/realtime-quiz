@@ -1,4 +1,5 @@
 src/index.js
+build/
 # Logs
 logs
 *.log

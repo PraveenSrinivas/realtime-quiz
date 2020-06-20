@@ -4,11 +4,25 @@
   .admin-dashboard-questions-list-title {
     align-self: center;
   }
+
   .admin-dashboard-questions-container {
     display: flex;
     flex-direction: column;
     width: 60%;
-
+    border-radius: 10px;
+    margin: 2rem 0;
+    background: #dcffa4;
+    .admin-dashboard-clear-question {
+      width: max-content;
+      padding: 0.51rem;
+      border-radius: 1rem;
+      background: #e4ff03;
+      align-self: center;
+      &:hover {
+        box-shadow: 0 0 5px 0px #000000;
+        cursor: pointer;
+      }
+    }
     .question-answer-container {
       border: 3px solid black;
       border-radius: 5px;
@@ -43,5 +57,11 @@
     flex-direction: column;
     width: 30%;
     align-items: center;
+    border-radius: 10px;
+    margin: 2rem 0;
+    background: #dcffa4;
+    .admin-dashboard-user-updates {
+      padding: 0.5rem 1rem;
+    }
   }
 }

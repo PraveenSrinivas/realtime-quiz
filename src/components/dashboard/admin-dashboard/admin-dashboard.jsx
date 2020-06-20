@@ -28,17 +28,31 @@ export default class AdminDashboard extends Component {
     });
   };
 
-  handleQuestionSelection = (event, questionAndAnswer) => {
-    console.log(this.state.questionAndAnswers, questionAndAnswer);
-    this.db.collection("display-question").doc("5fTUWUQCzVAKi44HAIJw").update({
-      question: questionAndAnswer.question,
-      options: questionAndAnswer.options,
-    });
+  handleQuestionSelection = (questionAndAnswer) => {
     this.db
       .collection("users")
-      .doc(this.props.userInfo.uid)
-      .update({ selection: questionAndAnswer.id });
-    this.setState({ selection: questionAndAnswer.id });
+      .where("isParticipant", "==", true)
+      .get()
+      .then((users) => {
+        users.docs.forEach((user) => {
+          this.db.collection("users").doc(user.id).update({ selection: "" });
+        });
+        this.db
+          .collection("display-question")
+          .doc("5fTUWUQCzVAKi44HAIJw")
+          .update({
+            question: questionAndAnswer.question,
+            options: questionAndAnswer.options,
+          });
+        this.db
+          .collection("users")
+          .doc(this.props.userInfo.uid)
+          .update({ selection: questionAndAnswer.id });
+        this.setState({
+          selection: questionAndAnswer.id,
+          participantsUpdates: [],
+        });
+      });
   };
 
   componentDidMount() {
@@ -73,8 +87,12 @@ export default class AdminDashboard extends Component {
               name: changeData.name,
             };
           });
-        this.setState({ participantsUpdates: [...this.state.participantsUpdates, ...participantsUpdates] });
-
+        this.setState({
+          participantsUpdates: [
+            ...this.state.participantsUpdates,
+            ...participantsUpdates,
+          ],
+        });
       });
   }
 
@@ -93,15 +111,25 @@ export default class AdminDashboard extends Component {
           <h2 className="admin-dashboard-questions-list-title">
             Questions List
           </h2>
+          <button
+            className="admin-dashboard-clear-question"
+            onClick={() =>
+              this.handleQuestionSelection({
+                id: "",
+                question: "",
+                options: "",
+              })
+            }
+          >
+            Clear Question Selection
+          </button>
           {this.state.questionAndAnswers.map((questionAndAnswer) => (
             <div
               className={`question-answer-container ${
                 this.state.selection === questionAndAnswer.id ? "selected" : ""
               }`}
               key={questionAndAnswer.id}
-              onClick={(event) =>
-                this.handleQuestionSelection(event, questionAndAnswer)
-              }
+              onClick={() => this.handleQuestionSelection(questionAndAnswer)}
             >
               <p>Question : {questionAndAnswer.question}</p>
               <div className="answer-container">
@@ -126,8 +154,8 @@ export default class AdminDashboard extends Component {
               (participant) =>
                 participant.selection && participant.selection.length > 0
             )
-            .map((participant) => (
-              <span key={participant.id}>
+            .map((participant, index) => (
+              <span key={index} className="admin-dashboard-user-updates">
                 {participant.name} has selected {participant.selection}
               </span>
             ))}
