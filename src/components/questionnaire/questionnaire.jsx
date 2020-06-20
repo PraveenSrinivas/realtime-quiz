@@ -22,7 +22,7 @@ export default class Questionnaire extends Component {
     this.db
       .collection("users")
       .doc(this.props.userInfo.uid)
-      .update({ isParticipant: false });
+      .update({ isParticipant: false, selection: "" });
   };
 
   componentDidMount() {
