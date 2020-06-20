@@ -7,17 +7,20 @@
   align-items: center;
 
   .login-form-container {
-    background-color: dodgerblue;
+    border: 4px solid #19670a;
+    background-color: #2ca01c;
+    color: white;
+    
     display: flex;
     flex-direction: column;
     flex-wrap: wrap;
-    border-radius: 5%;
-    padding: 1rem 3rem;
-    min-height: 50%;
+    border-radius: 12px;
+    padding: 20px 30px;
     .login-form-title {
       display: flex;
       justify-content: center;
       align-items: center;
+      margin: 10px;
     }
     .login-form-control {
       margin: 0 0 0.5rem;
