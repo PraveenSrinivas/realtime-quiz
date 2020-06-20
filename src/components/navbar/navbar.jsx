@@ -3,36 +3,38 @@ import { Link, NavLink } from "react-router-dom";
 
 import "./navbar.scss";
 
+const getUsername = (userInfo = {}) => userInfo.displayName || "User";
+const renderLogInActions = () => (
+  <div>
+    <NavLink className="header-button" to="/signup">
+      Signup
+    </NavLink>
+    <NavLink className="header-button" to="/login">
+      Login
+    </NavLink>
+  </div>
+);
+
+const renderLogOutActions = (props) => (
+  <div>
+    <span className="welcome-message">Welcome {getUsername(props.userInfo)}</span>
+    <button className="header-button logout-button" onClick={props.onLogout}>
+      Logout
+    </button>
+  </div>
+);
+
 const Navbar = (props) => {
   return (
     <nav className="quiz-header">
-      <Link className="quiz-header-nav" to="/">
+      <Link className="app-name" to="/">
         Realtime Quiz App
       </Link>
-      <span className="quiz-header-nav"></span>
-      {props.isUserLoggedIn ? (
-        <React.Fragment>
-          <span className="quiz-header-greeting">
-            Welcome
-            {"  " +
-              (props.userInfo && props.userInfo.displayName
-                ? props.userInfo.displayName
-                : "User")}
-          </span>
-          <button className="quiz-header-nav" onClick={props.onLogout}>
-            Logout
-          </button>
-        </React.Fragment>
-      ) : (
-        <React.Fragment>
-          <NavLink className="quiz-header-nav" to="/signup">
-            Signup
-          </NavLink>
-          <NavLink className="quiz-header-nav" to="/login">
-            Login
-          </NavLink>
-        </React.Fragment>
-      )}
+      <div className="user-action-wrapper">
+        {props.isUserLoggedIn
+          ? renderLogOutActions(props)
+          : renderLogInActions(props)}
+      </div>
     </nav>
   );
 };
