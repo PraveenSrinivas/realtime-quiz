@@ -1,35 +1,44 @@
 import React, { Component } from "react";
-import firebase from "firebase/app";
-import "firebase/auth";
+import { Link } from "react-router-dom";
 
 import "./signup.scss";
 
 export default class Signup extends Component {
-  state = { username: "", email: "", password: "" };
-  doPasswordsMatch = false;
+  state = {
+    username: "",
+    email: "",
+    password: "",
+    confirmPassword: "",
+    errorMessage: "",
+  };
 
   handleFormSubmit = (event) => {
     event.preventDefault();
-    if (this.doPasswordsMatch) {
-      const auth = firebase.auth();
-      auth
-        .createUserWithEmailAndPassword(this.state.email, this.state.password)
-        .then((response) => {
-          console.log(response);
-          if (response.code === 400) {
-            console.error("User already exists");
-          }
-        });
-      this.setState({ username: "", email: "", password: "" });
+    if (this.isSignupFormValid()) {
+      this.props.onSignup(this.state);
+      this.setState({
+        username: "",
+        email: "",
+        password: "",
+        confirmPassword: "",
+        errorMessage: "",
+      });
     }
   };
 
   handleFormChange = (event) => {
-    if (event.currentTarget.name === "confirmPassword") {
-      this.doPasswordsMatch = event.currentTarget.value === this.state.password;
-      if (!this.doPasswordsMatch) console.error("Passwords don't match");
-    }
     this.setState({ [event.currentTarget.name]: event.currentTarget.value });
+  };
+
+  isSignupFormValid = () => {
+    if (this.state.email.length < 1) {
+      this.setState({ errorMessage: "Enter a email address" });
+      return false;
+    } else if (this.state.password !== this.state.confirmPassword) {
+      this.setState({ errorMessage: "Passwords don't match" });
+      return false;
+    }
+    return true;
   };
 
   render() {
@@ -63,6 +72,7 @@ export default class Signup extends Component {
             name="email"
             value={this.state.email}
             onChange={this.handleFormChange}
+            required
           />
           <label className="signup-form-label" htmlFor="password">
             Password
@@ -75,6 +85,8 @@ export default class Signup extends Component {
             name="password"
             value={this.state.password}
             onChange={this.handleFormChange}
+            minLength="6"
+            required
           />
           <label className="signup-form-label" htmlFor="confirmPassword">
             Confirm Password
@@ -87,11 +99,22 @@ export default class Signup extends Component {
             name="confirmPassword"
             value={this.state.confirmPassword}
             onChange={this.handleFormChange}
+            onFocus={this.handleIncorrectPassword}
+            minLength="6"
+            required
           />
           <button className="signup-button" type="submit">
             Sign Up
           </button>
+          {this.state.errorMessage ? (
+            <span className="signup-form-error">{this.state.errorMessage}</span>
+          ) : (
+            ""
+          )}
         </form>
+        <p>
+          Existing User? <Link to="/login">Login Here</Link>
+        </p>
       </div>
     );
   }

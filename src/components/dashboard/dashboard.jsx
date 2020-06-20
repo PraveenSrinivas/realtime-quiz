@@ -1,21 +1,25 @@
 import React, { Component } from "react";
 
 import "./dashboard.scss";
+import { Link } from "react-router-dom";
+import AdminDashboard from "./admin-dashboard/admin-dashboard";
+import UserDashboard from "./user-dashboard/user-dashboard";
 
 export default class Dashboard extends Component {
-  handleLogout = (event) => {
-    event.preventDefault();
-    this.auth.signOut().then((user) => {
-      this.setState({ isUserLoggedIn: false });
-    });
-  };
   render() {
     return (
       <div>
-        <h4>Welcome to the Realtime Quiz App</h4>
-        <p>
-          You can participate in quiz that are hosted by the admin in realtime
-        </p>
+        {this.props.isUserLoggedIn ? (
+          <React.Fragment>
+            {this.props.isAdmin ? <AdminDashboard /> : <UserDashboard />}
+          </React.Fragment>
+        ) : (
+          <React.Fragment>
+            <h4>Welcome to the Realtime Quiz App</h4>
+            <p>Users will be able to participate in Quiz hosted by the Admin</p>
+            <Link to="/login">Login to explore</Link>
+          </React.Fragment>
+        )}
       </div>
     );
   }

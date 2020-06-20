@@ -1,34 +1,25 @@
 import React, { Component } from "react";
-import firebase from "firebase/app";
-import "firebase/auth";
+import { Link } from "react-router-dom";
 
 import "./login.scss";
 
 export default class Login extends Component {
   state = { email: "", password: "" };
 
-  handleFormSubmit = (event) => {
-    event.preventDefault();
-    const auth = firebase.auth();
-    auth
-      .signInWithEmailAndPassword(this.state.email, this.state.password)
-      .then((response) => {
-        console.log(response);
-        if (response.code === 400) {
-          console.error(response.message);
-        }
-      });
-    this.setState({ email: "", password: "" });
-  };
-
   handleFormChange = (event) => {
     this.setState({ [event.currentTarget.name]: event.currentTarget.value });
+  };
+
+  handleSubmit = (event) => {
+    event.preventDefault();
+    this.props.onLogin(this.state);
+    this.setState({ email: "", password: "" });
   };
 
   render() {
     return (
       <div className="login-container">
-        <form className="login-form-container" onSubmit={this.handleFormSubmit}>
+        <form className="login-form-container" onSubmit={this.handleSubmit}>
           <h2 className="login-form-title">LOGIN</h2>
           <label className="login-form-label" htmlFor="email">
             Email Address
@@ -41,6 +32,7 @@ export default class Login extends Component {
             name="email"
             value={this.state.email}
             onChange={this.handleFormChange}
+            required
           />
           <label className="login-form-label" htmlFor="password">
             Password
@@ -53,11 +45,15 @@ export default class Login extends Component {
             name="password"
             value={this.state.password}
             onChange={this.handleFormChange}
+            required
           />
           <button className="login-button" type="submit">
             Login
           </button>
         </form>
+        <p>
+          New User ? <Link to="/signup">Sign Up here</Link>
+        </p>
       </div>
     );
   }

@@ -3,7 +3,8 @@
   background-color: dodgerblue;
   min-height: 2em;
 
-  .quiz-header-nav {
+  .quiz-header-nav,
+  .quiz-header-greeting {
     background-color: transparent;
     text-decoration: none;
     height: 100%;
@@ -11,6 +12,8 @@
     place-items: center;
     padding: 0 0.5rem;
     color: white;
+  }
+  .quiz-header-nav {
     &:nth-child(2) {
       flex: 1 1 auto;
       pointer-events: none;
