@@ -19,6 +19,56 @@ export default class AdminDashboard extends Component {
       console.log(result);
     });
   };
+
+  handleQuestionSelection = (event, questionAndAnswer) => {
+    console.log(this.state.questionAndAnswers, questionAndAnswer);
+    this.db.collection("display-question").doc("5fTUWUQCzVAKi44HAIJw").update({
+      question: questionAndAnswer.question,
+      options: questionAndAnswer.options,
+    });
+    this.db
+      .collection("users")
+      .doc(this.props.userInfo.uid)
+      .update({ selection: questionAndAnswer.id });
+    this.setState({ selection: questionAndAnswer.id });
+  };
+
+  componentDidMount() {
+    this.db
+      .collection("users")
+      .doc(this.props.userInfo.uid)
+      .get()
+      .then((user) => {
+        this.db.collection("question-and-answers").onSnapshot((snapshot) => {
+          const questionAndAnswers = snapshot.docChanges().map((change) => {
+            return { id: change.doc.id, ...change.doc.data() };
+          });
+          this.setState({
+            questionAndAnswers,
+            selection: user.data().selection,
+          });
+        });
+      });
+    this.db
+      .collection("users")
+      .where("isParticipant", "==", true)
+      .onSnapshot((snapshot) => {
+        console.log(snapshot.docChanges());
+        const participantsUpdates = snapshot
+          .docChanges()
+          .filter((change) => change.type !== "removed")
+          .map((change) => {
+            const changeData = change.doc.data();
+            return {
+              id: change.doc.id,
+              selection: changeData.selection,
+              name: changeData.name,
+            };
+          });
+        this.setState({ participantsUpdates: [...this.state.participantsUpdates, ...participantsUpdates] });
+      });
+  }
+
   render() {
     return (
       <div>

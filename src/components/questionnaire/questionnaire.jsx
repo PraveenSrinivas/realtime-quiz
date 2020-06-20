@@ -20,21 +20,39 @@ export default class Questionnaire extends Component {
 
   render() {
     return (
-      <main className="main-container">
-        {this.state.quizObject ? (
+      <main className="main-container questionnaire-page">
+        {this.state.quizObject &&
+        this.state.quizObject.question &&
+        this.state.quizObject.question.length > 0 ? (
           <div className={this.state.id}>
-            <div className="question">
+            <h2 className="question">
               Question :- {this.state.quizObject.question}
-            </div>
-            <div className="answer">
+            </h2>
+            <div className="options">
               {this.state.quizObject.options.map((option) => (
-                <button key={option}>{option}</button>
+                <button
+                  className={`option  ${
+                    this.state.selection === option ? "option-selected" : ""
+                  }`}
+                  key={option}
+                  onClick={(event) => this.updateSelection(event, option)}
+                >
+                  {option}
+                </button>
               ))}
             </div>
           </div>
         ) : (
           <p>Oops!! Sorry, no questions at the moment</p>
         )}
+        <div className="endquiz-wrapper">
+          <p className="endquiz-title">
+            Click on End quiz to finish the quiz
+          </p>
+          <Link to="/">
+            <button className="endquiz-button" onClick={this.exitFromQuiz}>End Quiz</button>
+          </Link>
+        </div>
       </main>
     );
   }
