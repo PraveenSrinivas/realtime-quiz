@@ -73,7 +73,8 @@ export default class AdminDashboard extends Component {
               name: changeData.name,
             };
           });
-        this.setState({ participantsUpdates });
+        this.setState({ participantsUpdates: [...this.state.participantsUpdates, ...participantsUpdates] });
+
       });
   }
 

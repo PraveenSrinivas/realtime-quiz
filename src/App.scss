@@ -1,6 +1,10 @@
 .quiz-container {
   flex: 1 1 auto;
   overflow: auto;
+  text-align: center;
+  .question {
+    font-size: 18px;
+  }
 }
 
 .quiz-footer {
