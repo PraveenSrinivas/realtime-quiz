@@ -7,13 +7,15 @@
   align-items: center;
 
   .signup-form-container {
-    background-color: dodgerblue;
+    background-color: #2CA01C;
+    color: white;
     display: flex;
     flex-direction: column;
     flex-wrap: wrap;
     border-radius: 5%;
-    padding: 1rem 3rem;
-    min-height: 50%;
+    padding: 10px 40px;
+    border: 4px solid #19670a;
+
     .signup-form-title {
       display: flex;
       justify-content: center;
