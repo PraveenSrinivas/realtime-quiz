@@ -1,27 +1,24 @@
-
 .questionnaire-page {
   .option-selected {
     background-color: yellow;
   }
-  
+
   .options {
     display: flex;
-    width: 200px;
-    width: 50%;
-    margin: 0 auto;
-    justify-content: space-between;
+    flex-direction: row;
+    justify-content: space-evenly;
     flex-wrap: wrap;
-  
+
     .option {
       box-sizing: border-box;
-      width: 48%;
+      width: 40%;
       padding: 12px;
-      margin: 8px 4px;
+      margin: 1rem;
       min-height: 80px;
     }
   }
-  
-  .endquiz-wrapper{
+
+  .endquiz-wrapper {
     .endquiz-title {
       // TODO: add later
     }

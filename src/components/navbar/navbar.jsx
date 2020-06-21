@@ -5,23 +5,25 @@ import "./navbar.scss";
 
 const getUsername = (userInfo = {}) => userInfo.displayName || "User";
 const renderLogInActions = () => (
-  <div>
+  <React.Fragment>
     <NavLink className="header-button" to="/signup">
       Signup
     </NavLink>
     <NavLink className="header-button" to="/login">
       Login
     </NavLink>
-  </div>
+  </React.Fragment>
 );
 
 const renderLogOutActions = (props) => (
-  <div>
-    <span className="welcome-message">Welcome {getUsername(props.userInfo)}</span>
+  <React.Fragment>
+    <span className="welcome-message">
+      Welcome {getUsername(props.userInfo)}
+    </span>
     <button className="header-button logout-button" onClick={props.onLogout}>
       Logout
     </button>
-  </div>
+  </React.Fragment>
 );
 
 const Navbar = (props) => {
