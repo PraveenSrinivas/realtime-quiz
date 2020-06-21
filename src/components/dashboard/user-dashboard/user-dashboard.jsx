@@ -19,9 +19,9 @@ export default class UserDashboard extends Component {
     return (
       <div>
         <h2>User Dashboard</h2>
-        <p>Click on start to enter the Quiz</p>
+        <p>Click on Enter Quiz to participate</p>
         <Link to="/questionnaire">
-          <button onClick={this.registerForQuiz}>Start</button>
+          <button onClick={this.registerForQuiz}>Enter Quiz</button>
         </Link>
       </div>
     );
